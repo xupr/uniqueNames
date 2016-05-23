@@ -68,11 +68,25 @@ function areNamesMatching(name1, name2, firstName, basicCheck){
 		populateNameToNicknameMap();
 
 	//check the map for a nickname
-	if(nameToNicknamesMap[name1] && _.indexOf(nameToNicknamesMap[name1], name2) !== -1) 
-		return true;
+	if(nameToNicknamesMap[name1]){
+		for(var nickname of nameToNicknamesMap[name1]){
+			if(nickname === name2) //check if names are equal
+				return true;
 
-	if(nameToNicknamesMap[name2] && _.indexOf(nameToNicknamesMap[name2], name1) !== -1) 
-		return true;
+			if(isTypo(nickname, name2)) //check for a typo
+				return true;
+		}
+	}
+
+	if(nameToNicknamesMap[name2]){
+		for(var nickname of nameToNicknamesMap[name2]){
+			if(nickname === name1) //check if names are equal
+				return true;
+
+			if(isTypo(nickname, name1)) //check for a typo
+				return true;
+		}
+	}
 
 	if(basicCheck) //stop checking if only basic checking is needed
 		return false;
@@ -144,5 +158,5 @@ console.log(1, countUniqueNames.apply(null, params), params);
 params = ['Michele', 'Egli', 'Deborah', 'Egli', 'Michele Egli'];
 console.log(2, countUniqueNames.apply(null, params), params);
 console.log('----my small addition----');
-params = ['Deboraa', 'Egli', 'Deborah', 'Egli', 'Debosah Egli'];
+params = ['Deboraa', 'Egli', 'Debaie', 'Egli', 'Deborah Egli'];
 console.log(1, countUniqueNames.apply(null, params), params);
