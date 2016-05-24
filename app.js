@@ -137,7 +137,7 @@ function countUniqueNames(billFirstName, billLastName, shipFirstName, shipLastNa
 	   (!areNamesMatching(billFirstName, billName2) || !areNamesMatching(billLastName, billName1, false)))
 		uniqueNames++;
 
-	if(!billAndShipMatch){ //check if need to check for the ship name
+	if(!billAndShipMatch && uniqueNames === 3){ //check if need to check for the ship name
 		if((areNamesMatching(shipFirstName, billName1) && areNamesMatching(shipLastName, billName2, false)) ||  //check if ship name matches the card name
 		   (areNamesMatching(shipFirstName, billName2) && areNamesMatching(shipLastName, billName1, false)))
 			uniqueNames--;
@@ -147,7 +147,7 @@ function countUniqueNames(billFirstName, billLastName, shipFirstName, shipLastNa
 }
 
 var params;
-console.log('expected output - actual output - params');
+/*console.log('expected output - actual output - params');
 console.log('----basic tests----');
 params = ['Deborah', 'Egli', 'Deborah', 'Egli', 'Deborah Egli'];
 console.log(1, countUniqueNames.apply(null, params), params);
@@ -159,6 +159,6 @@ params = ['Deborah S', 'Egli', 'Deborah', 'Egli', 'Egli Deborah'];
 console.log(1, countUniqueNames.apply(null, params), params);
 params = ['Michele', 'Egli', 'Deborah', 'Egli', 'Michele Egli'];
 console.log(2, countUniqueNames.apply(null, params), params);
-console.log('----my small addition----');
-params = ['Deboraa', 'Egli', 'Debaie', 'Egli', 'Deborah Egli'];
+console.log('----my small addition----');*/
+params = ['Deborah', 'Egli', 'asdasfaf', 'Egli', 'Deborah Egli'];
 console.log(1, countUniqueNames.apply(null, params), params);
