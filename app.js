@@ -136,10 +136,12 @@ function countUniqueNames(billFirstName, billLastName, shipFirstName, shipLastNa
 	if((!areNamesMatching(billFirstName, billName1) || !areNamesMatching(billLastName, billName2, false)) &&
 	   (!areNamesMatching(billFirstName, billName2) || !areNamesMatching(billLastName, billName1, false)))
 		uniqueNames++;
-	else if(billAndShipMatch) //check if need to check for the ship name
-		if((!areNamesMatching(shipFirstName, billName1) || !areNamesMatching(shipLastName, billName2, false)) &&  //check if ship name matches the card name
-		   (!areNamesMatching(shipFirstName, billName2) || !areNamesMatching(shipLastName, billName1, false)))
-			uniqueNames++;
+
+	if(!billAndShipMatch){ //check if need to check for the ship name
+		if((areNamesMatching(shipFirstName, billName1) && areNamesMatching(shipLastName, billName2, false)) ||  //check if ship name matches the card name
+		   (areNamesMatching(shipFirstName, billName2) && areNamesMatching(shipLastName, billName1, false)))
+			uniqueNames--;
+	}
 
 	return uniqueNames;
 }
