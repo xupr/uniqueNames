@@ -2,7 +2,7 @@ var fs = require('fs'),
 	_ = require('lodash');
 
 var nameToNicknamesMap;
-var acceptedTypoRate = 0.2;
+var acceptedTypoRate = 0.125;
 
 String.prototype.replaceAt = function(index, character) {
 	/*
@@ -37,7 +37,13 @@ function isTypo(str1, str2){
 	if(str1.length !== str2.length)
 		return false;
 
-	var allowedTypos = _.ceil(str1.length*acceptedTypoRate);
+	if(str1 === str2)
+		return true;
+
+	var allowedTypos = _.round(str1.length*acceptedTypoRate);
+	if(allowedTypos === 0)
+		return false;
+
 	for(var i = str1.length - 1; i >= 0; i--){
 		if(str1[i] !== str2[i] && allowedTypos-- == 0)
 			return false;
@@ -55,9 +61,6 @@ function areNamesMatching(name1, name2, firstName, basicCheck){
 	firstName = firstName || true;
 	basicCheck = basicCheck || false;
 
-	if(name1 === name2) //check if names are equal
-		return true;
-
 	if(isTypo(name1, name2)) //check for a typo
 		return true;
 
@@ -68,25 +71,16 @@ function areNamesMatching(name1, name2, firstName, basicCheck){
 		populateNameToNicknameMap();
 
 	//check the map for a nickname
-	if(nameToNicknamesMap[name1]){
-		for(var nickname of nameToNicknamesMap[name1]){
-			if(nickname === name2) //check if names are equal
-				return true;
-
+	if(nameToNicknamesMap[name1])
+		for(var nickname of nameToNicknamesMap[name1])
 			if(isTypo(nickname, name2)) //check for a typo
 				return true;
-		}
-	}
 
-	if(nameToNicknamesMap[name2]){
-		for(var nickname of nameToNicknamesMap[name2]){
-			if(nickname === name1) //check if names are equal
-				return true;
-
+	if(nameToNicknamesMap[name2])
+		for(var nickname of nameToNicknamesMap[name2])
 			if(isTypo(nickname, name1)) //check for a typo
 				return true;
-		}
-	}
+	
 
 	if(basicCheck) //stop checking if only basic checking is needed
 		return false;
@@ -147,7 +141,7 @@ function countUniqueNames(billFirstName, billLastName, shipFirstName, shipLastNa
 }
 
 var params;
-/*console.log('expected output - actual output - params');
+console.log('expected output - actual output - params');
 console.log('----basic tests----');
 params = ['Deborah', 'Egli', 'Deborah', 'Egli', 'Deborah Egli'];
 console.log(1, countUniqueNames.apply(null, params), params);
@@ -159,6 +153,8 @@ params = ['Deborah S', 'Egli', 'Deborah', 'Egli', 'Egli Deborah'];
 console.log(1, countUniqueNames.apply(null, params), params);
 params = ['Michele', 'Egli', 'Deborah', 'Egli', 'Michele Egli'];
 console.log(2, countUniqueNames.apply(null, params), params);
-console.log('----my small addition----');*/
-params = ['Deborah', 'Egli', 'asdasfaf', 'Egli', 'Deborah Egli'];
+console.log('----my small addition----');
+params = ['Deboraa', 'Egli', 'Debaie', 'Egli', 'Deborah Egli'];
 console.log(1, countUniqueNames.apply(null, params), params);
+params = ['Deboraa', 'Egli', 'asd', 'Egli', 'Deborah Egli'];
+console.log(2, countUniqueNames.apply(null, params), params);
